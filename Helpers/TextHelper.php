@@ -1,6 +1,6 @@
 <?php
 /**
- * User: Roman Galeev <roman.galeev@lazada.com>
+ * User: Roman Galeev <romanrgaleev@gmail.com>
  * Date: 24/10/15
  * Time: 00:46
  */
@@ -10,10 +10,9 @@ namespace Helpers;
 class TextHelper
 {
     /**
-     * Преобразует строку к URL-виду. Фактически производит транслитерацию и заменяет пробелы и некоторые другие
-     * символы в знаки подчёркивания
+     * Format a string as an url
      *
-     * @param $string
+     * @param string $string
      * @return string
      */
     public static function urlFormat($string)

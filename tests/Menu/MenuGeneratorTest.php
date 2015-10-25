@@ -1,12 +1,13 @@
 <?php
 /**
- * User: Roman Galeev <roman.galeev@lazada.com>
+ * User: Roman Galeev <romanrgaleev@gmail.com>
  * Date: 25/10/15
  * Time: 02:18
  */
 
 namespace tests\Menu;
 
+use \Menu\HtmlRenderer;
 use \Menu\MenuGenerator;
 
 class MenuGeneratorTest extends \PHPUnit_Framework_TestCase
@@ -17,9 +18,9 @@ class MenuGeneratorTest extends \PHPUnit_Framework_TestCase
      *
      * @dataProvider provideDateForGenerateFromInput
      */
-    public function testGenerateFromInput(array $input, $expectedResult)
+    public function testGenerateFromInputWithHtmlRenderer(array $input, $expectedResult)
     {
-        $menuGenerator = new MenuGenerator();
+        $menuGenerator = new MenuGenerator(new HtmlRenderer());
         $result        = $menuGenerator->generateFromInput($input);
         static::assertEquals($expectedResult, $result);
     }
@@ -46,6 +47,7 @@ class MenuGeneratorTest extends \PHPUnit_Framework_TestCase
         <a href="parent-1">Parent 1</a>
     </li>
 </ul>
+
 RESULT
             ],
             'two parents'                                   => [
@@ -70,6 +72,7 @@ RESULT
         <a href="parent-2">Parent 2</a>
     </li>
 </ul>
+
 RESULT
             ],
             'parent with one child'                         => [
@@ -97,6 +100,7 @@ RESULT
         </ul>
     </li>
 </ul>
+
 RESULT
             ],
             'two parents with children in different levels' => [
@@ -200,6 +204,7 @@ RESULT
         </ul>
     </li>
 </ul>
+
 RESULT
             ],
         ];

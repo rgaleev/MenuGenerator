@@ -1,6 +1,6 @@
 <?php
 /**
- * User: Roman Galeev <roman.galeev@lazada.com>
+ * User: Roman Galeev <romanrgaleev@gmail.com>
  * Date: 23/10/15
  * Time: 23:26
  */
