@@ -7,6 +7,9 @@
 
 namespace Menu;
 
+use Menu\Data\Item;
+use Menu\Data\ItemCollection;
+
 /**
  * Generates menu code
  *
@@ -35,23 +38,34 @@ class MenuGenerator
         $this->renderer = $menuRenderer;
     }
 
-    private function renderMenuItem($menuItem, $level)
+    /**
+     * @param Item $menuItem
+     *
+     * @return string
+     */
+    private function renderMenuItem(Item $menuItem)
     {
-        $item = $this->renderer->renderItem($menuItem, $level);
-        if (array_key_exists('children', $menuItem)) {
-            $item .= $this->renderMenuLevel($menuItem['children'], $level + 1);
+        $item = $this->renderer->renderMenuItem($menuItem);
+        if ($menuItem->childrenCount > 0) {
+            $item .= $this->renderMenuLevel($menuItem->children);
         }
 
-        return $this->renderer->wrapItem($item, $level);
+        return $this->renderer->wrapMenuItem($item, $menuItem->level);
     }
 
-    private function renderMenuLevel($menuLevel, $level)
+    /**
+     * @param ItemCollection $menuLevelConfig
+     *
+     * @return string
+     */
+    private function renderMenuLevel(ItemCollection $menuLevelConfig)
     {
-        $result = '';
-        foreach ($menuLevel as $menuItem) {
-            $result .= $this->renderMenuItem($menuItem, $level);
+        $menuLevel = '';
+        foreach ($menuLevelConfig as $menuItem) {
+            $menuLevel .= $this->renderMenuItem($menuItem);
         }
-        return $this->renderer->wrapLevel($result, $level);
+
+        return $this->renderer->wrapMenuLevel($menuLevel, $menuLevelConfig->level);
     }
 
     /**
@@ -61,6 +75,53 @@ class MenuGenerator
      */
     public function generateFromInput(array $input)
     {
-        return $this->renderMenuLevel($input, 0);
+        $config = $this->makeConfig($input);
+
+        return $this->renderMenuLevel($config);
+    }
+
+    /**
+     * @param array $itemData
+     * @param int   $level
+     *
+     * @return Item
+     */
+    private function makeConfigItem(array $itemData, $level)
+    {
+        $item = new Item($itemData, $level);
+        if (array_key_exists('children', $itemData)) {
+            $children = $this->makeConfigLevel($itemData['children'], $level + 1);
+            $item->setChildren($children);
+        }
+
+        return $item;
+    }
+
+    /**
+     * @param array $levelData
+     * @param int   $level
+     *
+     * @return ItemCollection
+     */
+    private function makeConfigLevel(array $levelData, $level)
+    {
+        $collection = new ItemCollection($level);
+        foreach ($levelData as $itemData) {
+            $collection[] = $this->makeConfigItem($itemData, $level);
+        }
+
+        return $collection;
+    }
+
+    /**
+     * Makes proper menu config from initial array
+     *
+     * @param array $input
+     *
+     * @return ItemCollection
+     */
+    private function makeConfig(array $input)
+    {
+        return $this->makeConfigLevel($input, 0);
     }
 }

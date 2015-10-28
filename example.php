@@ -13,8 +13,6 @@ require_once 'autoloader.php';
 
 $inputGenerator = new InputGenerator();
 $input          = $inputGenerator->generate();
-echo '<pre>';
-//    \var_export($input);
-$menuGenerator = new MenuGenerator(new HtmlRenderer());
-$menu          = $menuGenerator->generateFromInput($input);
+$menuGenerator  = new MenuGenerator(new HtmlRenderer());
+$menu           = $menuGenerator->generateFromInput($input);
 \var_export($menu);

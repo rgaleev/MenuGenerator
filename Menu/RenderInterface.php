@@ -7,6 +7,8 @@
 
 namespace Menu;
 
+use Menu\Data\Item;
+
 /**
  * Interface for menu renderer
  *
@@ -15,18 +17,25 @@ namespace Menu;
 interface RenderInterface
 {
     /**
-     * @param array $itemData
-     * @param int $menuLevel
+     * @param Item $item
      *
      * @return string
      */
-    public function renderItem(array $itemData, $menuLevel);
+    public function renderMenuItem(Item $item);
 
     /**
-     * @param string $item
-     * @param int $menuLevel
+     * @param string $menuItem
+     * @param int    $level
      *
      * @return string
      */
-    public function wrapItem($item, $menuLevel);
+    public function wrapMenuItem($menuItem, $level);
+
+    /**
+     * @param string $menuLevel
+     * @param int    $level
+     *
+     * @return string
+     */
+    public function wrapMenuLevel($menuLevel, $level);
 }

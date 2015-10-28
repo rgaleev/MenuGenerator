@@ -6,6 +6,7 @@
  */
 
 namespace Menu;
+use Menu\Data\Item;
 
 /**
  * Renders menu as HTML
@@ -55,44 +56,42 @@ class HtmlRenderer implements RenderInterface
     }
 
     /**
-     * @param string $item
-     * @param int $menuLevel
+     * @param string $menuItem
+     * @param int $level
      *
      * @return string
      */
-    public function wrapItem($item, $menuLevel)
+    public function wrapMenuItem($menuItem, $level)
     {
-        $indentLevel = 2 * $menuLevel + 1;
-        return $this->renderItemBegin($indentLevel) . $item . $this->renderItemEnd($indentLevel);
+        $indentLevel = 2 * $level + 1;
+        return $this->renderItemBegin($indentLevel) . $menuItem . $this->renderItemEnd($indentLevel);
     }
 
     /**
-     * @param string $item
-     * @param int $menuLevel
+     * @param string $menuLevel
+     * @param int    $level
      *
      * @return string
      */
-    public function wrapLevel($item, $menuLevel)
+    public function wrapMenuLevel($menuLevel, $level)
     {
-        $indentLevel = 2 * $menuLevel;
-        return $this->renderLevelBegin($indentLevel) . $item . $this->renderLevelEnd($indentLevel);
+        $indentLevel = 2 * $level;
+        return $this->renderLevelBegin($indentLevel) . $menuLevel . $this->renderLevelEnd($indentLevel);
     }
 
     /**
-     * @param array $itemData
-     * @param int $menuLevel
+     * @param Item $item
      *
      * @return string
      */
-    public function renderItem(array $itemData, $menuLevel)
+    public function renderMenuItem(Item $item)
     {
-        $childrenCount = array_key_exists('children', $itemData) ? count($itemData['children']) : 0;
         $childrenCountOutput = '';
-        if ($childrenCount > 0) {
-            $childrenCountOutput = " ($childrenCount)";
+        if ($item->childrenCount > 0) {
+            $childrenCountOutput = " ($item->childrenCount)";
         }
-        $indentLevel = 2 * $menuLevel + 2;
-        $result = $this->renderIndent($indentLevel) . "<a href=\"{$itemData['url']}\">{$itemData['title']}{$childrenCountOutput}</a>" . PHP_EOL;
+        $indentLevel = 2 * $item->level + 2;
+        $result = $this->renderIndent($indentLevel) . "<a href=\"{$item->url}\">{$item->title}{$childrenCountOutput}</a>" . PHP_EOL;
 
         return $result;
     }
