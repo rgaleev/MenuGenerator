@@ -54,56 +54,46 @@ class HtmlRenderer implements RenderInterface
         return $result;
     }
 
-    private function renderItem($level, $url, $title, $childrenCount)
+    /**
+     * @param string $item
+     * @param int $menuLevel
+     *
+     * @return string
+     */
+    public function wrapItem($item, $menuLevel)
     {
+        $indentLevel = 2 * $menuLevel + 1;
+        return $this->renderItemBegin($indentLevel) . $item . $this->renderItemEnd($indentLevel);
+    }
+
+    /**
+     * @param string $item
+     * @param int $menuLevel
+     *
+     * @return string
+     */
+    public function wrapLevel($item, $menuLevel)
+    {
+        $indentLevel = 2 * $menuLevel;
+        return $this->renderLevelBegin($indentLevel) . $item . $this->renderLevelEnd($indentLevel);
+    }
+
+    /**
+     * @param array $itemData
+     * @param int $menuLevel
+     *
+     * @return string
+     */
+    public function renderItem(array $itemData, $menuLevel)
+    {
+        $childrenCount = array_key_exists('children', $itemData) ? count($itemData['children']) : 0;
         $childrenCountOutput = '';
         if ($childrenCount > 0) {
             $childrenCountOutput = " ($childrenCount)";
         }
-        $result = $this->renderIndent($level) . "<a href=\"{$url}\">{$title}{$childrenCountOutput}</a>" . PHP_EOL;
+        $indentLevel = 2 * $menuLevel + 2;
+        $result = $this->renderIndent($indentLevel) . "<a href=\"{$itemData['url']}\">{$itemData['title']}{$childrenCountOutput}</a>" . PHP_EOL;
 
         return $result;
     }
-
-    /**
-     * @param array $menuLevel
-     * @param int $level
-     *
-     * @return string
-     */
-    public function renderMenuLevel(array $menuLevel, $level)
-    {
-        $result  = $this->renderLevelBegin($level);
-
-        foreach ($menuLevel as $menuItem) {
-            $result .= $this->renderMenuItem($menuItem, $level + 1);
-        }
-
-        $result .= $this->renderLevelEnd($level);
-
-        return $result;
-    }
-
-    /**
-     * @param array $menuItem
-     * @param int $level
-     *
-     * @return string
-     */
-    public function renderMenuItem(array $menuItem, $level)
-    {
-        $result  = $this->renderItemBegin($level);
-        $result .= $this->renderItem(
-            $level + 1,
-            $menuItem['url'],
-            $menuItem['title'],
-            isset($menuItem['children']) ? count($menuItem['children']) : 0
-        );
-        if (isset($menuItem['children'])) {
-            $result .= $this->renderMenuLevel($menuItem['children'], $level + 1);
-        }
-        $result .= $this->renderItemEnd($level);
-        return $result;
-    }
-
 }

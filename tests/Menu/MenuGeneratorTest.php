@@ -10,6 +10,11 @@ namespace tests\Menu;
 use \Menu\HtmlRenderer;
 use \Menu\MenuGenerator;
 
+/**
+ * Class for testing MenuGenerator
+ *
+ * @package tests\Menu
+ */
 class MenuGeneratorTest extends \PHPUnit_Framework_TestCase
 {
     /**

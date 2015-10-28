@@ -15,10 +15,18 @@ namespace Menu;
 interface RenderInterface
 {
     /**
-     * @param array $menuLevel
-     * @param int $level
+     * @param array $itemData
+     * @param int $menuLevel
      *
      * @return string
      */
-    public function renderMenuLevel(array $menuLevel, $level);
+    public function renderItem(array $itemData, $menuLevel);
+
+    /**
+     * @param string $item
+     * @param int $menuLevel
+     *
+     * @return string
+     */
+    public function wrapItem($item, $menuLevel);
 }

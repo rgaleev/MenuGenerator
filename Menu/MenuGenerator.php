@@ -35,6 +35,25 @@ class MenuGenerator
         $this->renderer = $menuRenderer;
     }
 
+    private function renderMenuItem($menuItem, $level)
+    {
+        $item = $this->renderer->renderItem($menuItem, $level);
+        if (array_key_exists('children', $menuItem)) {
+            $item .= $this->renderMenuLevel($menuItem['children'], $level + 1);
+        }
+
+        return $this->renderer->wrapItem($item, $level);
+    }
+
+    private function renderMenuLevel($menuLevel, $level)
+    {
+        $result = '';
+        foreach ($menuLevel as $menuItem) {
+            $result .= $this->renderMenuItem($menuItem, $level);
+        }
+        return $this->renderer->wrapLevel($result, $level);
+    }
+
     /**
      * @param array $input
      *
@@ -42,6 +61,6 @@ class MenuGenerator
      */
     public function generateFromInput(array $input)
     {
-        return $this->renderer->renderMenuLevel($input, 0);
+        return $this->renderMenuLevel($input, 0);
     }
 }
