@@ -15,7 +15,7 @@ use \Menu\MenuGenerator;
  *
  * @package tests\Menu
  */
-class MenuGeneratorTest extends \PHPUnit_Framework_TestCase
+class MenuGeneratorIntegrationTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @param array  $input

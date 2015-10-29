@@ -11,14 +11,6 @@ use Helpers\TextHelper;
 
 class InputGenerator
 {
-
-    private static $template = [
-        'title'    => '%title%',
-        'url'      => '%url%',
-        'children' => [],
-    ];
-
-
     private static $config = [
         [
             [
@@ -92,7 +84,7 @@ class InputGenerator
     ];
 
 
-    public function generate($random = true)
+    public function generate()
     {
         $num = 0;
         $result = [];
